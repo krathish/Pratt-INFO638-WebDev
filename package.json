@@ -1,0 +1,12 @@
+{
+  "name": "bookedin",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node bookedin.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.6"
+  }
+}
