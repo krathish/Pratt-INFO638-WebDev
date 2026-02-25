@@ -1,39 +1,43 @@
+//framework imports
 const express = require('express');
-const path = require('path');
-const app = express();
-const port = 3000;
+const handlebars = require('express-handlebars').create();
+const bodyParser = require('body-parser');
 
+//application improts
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
 
-var handlebars = require('express-handlebars').create({
-  layoutsDir: path.join(__dirname, 'Views', 'Layouts'),
-  defaultLayout: 'main',
-});
+
+//framework setup
+const app = express();
+const port = 3000;
+
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'Views'));
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
+//application setup
 app.use('/', indexRouter);
 app.use('/authors', authorsRouter);
 app.use('/books', booksRouter);
 
-app.use((req, res) => {
-  res.status(404);
-  res.send('<h1>404 - Not Found</h1>');
+
+app.use((_req, res) => {
+ res.status(404);
+ res.send(" 404 - please go away, i am not home! ");
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.type('text/plain');
-  res.status(500);
-  res.send('500 - Server Error');
-});
+app.use((err, _req, res, _next) => {
+ console.error(err.message);
+ res.status(500);
+ res.send(" 500 - Aaaahrg, why did you do this to me! ");
+})
+
+
+
 
 app.listen(port, () => console.log(
-  `Express started on http://localhost:${port}; ` +
-  `press Ctrl-C to terminate.`
-));
-
-    
+`Express started on http://localhost:${port}
+press Ctrl-C to terminate.`));
