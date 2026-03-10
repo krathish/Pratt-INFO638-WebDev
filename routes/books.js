@@ -14,10 +14,17 @@ router.get('/form', async (req, res, next) => {
 });
 
 router.post('/upsert', async (req, res, next) => {
-  console.log('body: ' + JSON.stringify(req.body));
+  console.log('body: ' + JSON.stringify(req.body))
   Book.upsert(req.body);
-  res.redirect(303, '/books');
+  let createdOrupdated = req.body.id ? 'updated' : 'created';
+  req.session.flash = {
+    type: 'info',
+    intro: 'Success!',
+    message: `the book has been ${createdOrupdated}!`,
+  };
+  res.redirect(303, '/books')
 });
+
 
 router.get('/edit', async (req, res, next) => {
   let bookIndex = req.query.id;
