@@ -1,6 +1,11 @@
 //framework imports
 const express = require('express');
-const handlebars = require('express-handlebars').create();
+const handlebars = require('express-handlebars').create({
+    helpers: {
+      and: (a, b) => a && b,
+      in: (arr, val) => Array.isArray(arr) && arr.map(String).includes(String(val))
+    }
+  });
 const bodyParser = require('body-parser');
 const { credentials } = require('./config')
 const cookieParser = require('cookie-parser')
@@ -10,6 +15,7 @@ const expressSession = require('express-session')
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
+const genresRouter = require('./routes/genres');
 
 
 //framework setup
@@ -39,6 +45,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/authors', authorsRouter);
 app.use('/books', booksRouter);
+app.use('/genres', genresRouter);
 
 
 app.use((_req, res) => {

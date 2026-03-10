@@ -1,6 +1,6 @@
 const books = [
- {title: "Leviathan Wakes", publishingYear: 2011},
- {title: "Caliban's War", publishingYear: 2012}
+ {title: "Leviathan Wakes", publishingYear: 2011, genreId: ["4"]},
+ {title: "Thanksgiving Dinner recipes", publishingYear: 2015, genreId: ["1"]},
 ];
 
 exports.upsert = (book) => {
