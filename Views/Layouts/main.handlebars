@@ -15,6 +15,20 @@
         <li><a href="/genres">Genres</a></li>
         <li><a href="/authors">Authors</a></li>
         <li><a href="/books">Books</a></li>
+        
+        {{#if currentUser}}
+          <li>
+            Welcome {{currentUser.name}}
+          </li>
+        {{/if}}
+        {{#else}}
+        <li>
+        <a href="/users/register">register</a>
+        </li>
+        <li>
+        <a href="/users/login">login</a>
+        </li>
+        {{/else}}
       </ul>
     </nav>
     {{{body}}}

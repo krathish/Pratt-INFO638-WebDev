@@ -16,6 +16,7 @@ const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
 const genresRouter = require('./routes/genres');
+const usersRouter = require('./routes/users');
 
 
 //framework setup
@@ -32,6 +33,7 @@ app.use(expressSession({
   saveUninitialized: false,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }));
+app.use('/users', usersRouter);
 
 // session configuration
 //make it possible to use flash messages, and pass them to the view
@@ -40,6 +42,11 @@ app.use((req, res, next) => {
   delete req.session.flash
   next()
 })
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.currentUser
+  next()
+})
+
 
 //application setup
 app.use('/', indexRouter);

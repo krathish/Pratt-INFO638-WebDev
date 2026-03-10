@@ -43,7 +43,7 @@ router.get('/show/:id', async (req, res, next) => {
     templateVars['authors'] = templateVars.book.authorIds.map((authorId) => Author.get(authorId))
   }
   if (templateVars.book.genreId) {
-    templateVars['genres'] = templateVars.book.genreId.map((genreId) => Genre.get(parseInt(genreId)))
+    templateVars['genre'] = Genre.get(parseInt(templateVars.book.genreId))
   }
   res.render('books/show', templateVars);
 });
