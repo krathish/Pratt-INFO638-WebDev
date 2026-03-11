@@ -3,7 +3,7 @@
 
 <ul>
   {{#each books}}
-    <li>{{@index}} - {{this.title}} - {{this.publishingYear}}</li>
+    <li>{{@index}} - {{this.title}} - {{this.publishingYear}} - {{this.genreId}}</li>
     <a href="/books/edit?id={{@index}}">edit</a>
   {{/each}}
 </ul>

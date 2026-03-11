@@ -1,0 +1,19 @@
+<h1>Genres Form</h1>
+
+  {{#if genre}}
+    <div>
+      <h2>{{genre.name}}</h2> {{!display current genre name}}
+    </div>
+  {{/if}}
+
+<form action="/genres/upsert" role="form" method="post"> {{!form that sends data to update or insert}}
+  <div>
+    <label for="name">Genre</label>
+    <input type="text" id="name" name="name" {{#if genre}}value="{{genre.name}}"{{/if}}> {{!input for genre name, if editing then pre-fill}}
+  </div>
+
+  <input type="hidden" name="id" value="{{genreIndex}}">
+  
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

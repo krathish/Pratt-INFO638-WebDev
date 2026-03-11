@@ -1,14 +1,48 @@
-<h1>Books form</h1>
+<h1>Add new book</h1>
 
 <form action="/books/upsert" role="form" method="post">
+
   <div>
     <label for="title">Title</label>
     <input type="text" id="title" name="title" {{#if book}}value="{{book.title}}"{{/if}}>
   </div>
+
+
   <div>
     <label for="publishing_year">Publishing year</label>
     <input type="number" step="1" placeholder="2000" id="publishing_year" name="publishingYear" {{#if book}}value="{{book.publishingYear}}"{{/if}}>
   </div>
-  <input type="hidden" value="{{bookIndex}}" name="id">
+
+
+  <div class="mb-3">
+    <label for="authorIds">Authors</label>
+    <select name="authorIds" multiple id="authorIds">
+      <option disabled value>-- select Author --</option> {{!disabled option so it can't be selected}}
+
+      {{#each authors}}  {{!loop through each auther}}
+        <option value="{{@index}}" {{!for each author, create option, value is index}}
+        {{#if (and @root.book (in @root.book.authorIds @index))}}selected{{/if}}>  {{!'and' checks if book exist, in checks if current index is present, then marks as selected}}
+          {{this.firstName}} {{this.lastName}} {{!display first and last name}}
+        </option>
+      {{/each}}
+    </select>
+  </div>
+
+
+  <div class="mb-3">
+    <label for="genreId">Genres</label>
+    <select name="genreId" multiple id="genreId">
+      <option disabled value>-- select Genre --</option> {{!disabled option so it can't be selected}}
+      {{#each genres}} {{!loop through each genre}}
+        <option value="{{@index}}" {{#if (and @root.book (in @root.book.genreId @index))}}selected{{/if}}> {{!'and' checks if book exist, in checks if current index is present, then marks as selected}}
+          {{this.name}} {{!display genre name}}
+        </option>
+      {{/each}}
+    </select>
+  </div>
+
+
+  <input type="hidden" value="{{bookIndex}}" name="id"> {{!hidden input that sends the books index as 'id'}}
+
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
