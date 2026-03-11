@@ -8,14 +8,26 @@ router.get('/register', async (req, res, next) => {
 
 router.post('/register', async (req, res, next) => {
   console.log('body: ' + JSON.stringify(req.body));
-  User.add(req.body);
-  req.session.flash = {
-    type: 'info',
-    intro: 'Success!',
-    message: `the user: ${req.body.name} has been created!`,
-  };
-  res.redirect(303, '/');
+  const user = User.getByEmail(req.body.email)
+  if (user) {
+    res.render('users/register', {
+      title: 'BookedIn || Login',
+      flash: {
+        type: 'danger',
+        intro: 'Error!',
+        message: `A user with this email already exists`}
+    });
+  } else {
+    User.add(req.body);
+    req.session.flash = {
+      type: 'info',
+      intro: 'Success!',
+      message: `the user has been created!`,
+    };
+    res.redirect(303, '/');
+  }
 });
+
 
 router.get('/login', async (req, res, next) => {
   res.render('users/login', { title: 'BookedIn || Login' });
@@ -41,6 +53,17 @@ router.post('/login', async (req, res, next) => {
     });
   }
 });
+
+router.post('/logout', async (req, res, next) => {
+  delete req.session.currentUser
+  req.session.flash = {
+    type: 'info',
+    intro: 'Success!',
+    message: 'You are now logged out',
+  };
+  res.redirect(303, '/');
+});
+
 
 
 module.exports = router;
