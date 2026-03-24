@@ -1,8 +1,9 @@
 const express = require('express');
-
+const BookUser = require('../models/book_user');
 const Book = require('../models/book');
 const Author = require('../models/author'); //import authors
 const Genre = require('../models/genre'); //import genres
+
 
 const router = express.Router();
 
@@ -37,13 +38,18 @@ router.get('/edit', async (req, res, next) => {
 router.get('/show/:id', async (req, res, next) => {
   let templateVars = {
     title: 'BookedIn || Books',
-    book: Book.get(req.params.id)
+    book: Book.get(req.params.id),
+    bookId: req.params.id,
+    statuses: BookUser.statuses
   }
    if (templateVars.book.authorIds) {
     templateVars['authors'] = templateVars.book.authorIds.map((authorId) => Author.get(authorId))
   }
   if (templateVars.book.genreId) {
     templateVars['genre'] = Genre.get(parseInt(templateVars.book.genreId))
+  }
+  if (req.session.currentUser) {
+    templateVars['bookUser'] = BookUser.get(req.params.id, req.session.currentUser.email);
   }
   res.render('books/show', templateVars);
 });

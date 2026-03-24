@@ -1,14 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Book = require('../models/book');
+const BookUser = require('../models/book_user');
 
 router.get('/register', async (req, res, next) => {
+    if (req.session.currentUser) {
+    req.session.flash = {
+      type: 'info',
+      intro: 'Error!',
+      message: 'You are already logged in',
+    };
+    return res.redirect(303, '/')
+    }
   res.render('users/register', { title: 'BookedIn || Registration' });
 });
 
 router.post('/register', async (req, res, next) => {
   console.log('body: ' + JSON.stringify(req.body));
   const user = User.getByEmail(req.body.email)
+  
   if (user) {
     res.render('users/register', {
       title: 'BookedIn || Login',
@@ -63,6 +74,26 @@ router.post('/logout', async (req, res, next) => {
   };
   res.redirect(303, '/');
 });
+
+router.get('/profile', async (req, res, next) => {
+  if (! req.session.currentUser) {
+    req.session.flash = {
+      type: 'error',
+      intro: 'Fail!',
+      message: 'you need to be a logged in user',
+    };
+    res.redirect(303, '/');
+  }
+  const booksUser = BookUser.AllForUser(req.session.currentUser.email);
+  booksUser.forEach((bookUser) => {
+    bookUser.book = Book.get(bookUser.bookId)
+  })
+  res.render('users/profile',
+    { title: 'BookedIn || Profile',
+      user: req.session.currentUser,
+      booksUser: booksUser });
+});
+
 
 
 

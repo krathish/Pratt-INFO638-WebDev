@@ -10,13 +10,15 @@ const bodyParser = require('body-parser');
 const { credentials } = require('./config')
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
+const csrf = require('csurf')
 
-//application improts
+//application imports
 const indexRouter = require('./routes/index');
 const authorsRouter = require('./routes/authors');
 const booksRouter = require('./routes/books');
 const genresRouter = require('./routes/genres');
 const usersRouter = require('./routes/users');
+const booksUsersRouter = require('./routes/books_users');
 
 
 //framework setup
@@ -34,6 +36,12 @@ app.use(expressSession({
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }));
 app.use('/users', usersRouter);
+
+app.use(csrf({ cookie: true }))
+app.use((req, res, next) => {
+  res.locals._csrfToken = req.csrfToken()
+  next()
+})
 
 // session configuration
 //make it possible to use flash messages, and pass them to the view
@@ -53,6 +61,7 @@ app.use('/', indexRouter);
 app.use('/authors', authorsRouter);
 app.use('/books', booksRouter);
 app.use('/genres', genresRouter);
+app.use('/books_users', booksUsersRouter);
 
 
 app.use((_req, res) => {

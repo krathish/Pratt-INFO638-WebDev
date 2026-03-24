@@ -1,5 +1,6 @@
 <h1>Authors form</h1>
 <form action="/authors/upsert" method="post" role="post">
+<input type="hidden" name="_csrf" value="{{_csrfToken}}">
   <div>
     <label for="first_name">First Name</label>
     <input type="text" id="first_name" name="firstName" {{#if author}}value="{{author.firstName}}"{{/if}}>
