@@ -1,5 +1,10 @@
 const users = [
-  { email: 'krathishprakash01@gmail.com', name:"Krathish", password:"password2026" }
+  {
+    email: 'krathishprakash01@gmail.com',
+    name: 'Krathish',
+    salt: '8de3bbe4c550118bda8adafdfb505c4f',
+    encryptedPassword: '8e1d8e5ca2728da3f9925a28e8573a5e0eb3a2a0cddd4bd2dda04c3f7a79acca'
+  }
 ];
 var crypto = require('crypto');
 const createSalt = () => {
@@ -18,7 +23,6 @@ exports.add = (user) => {
     salt: salt,
     encryptedPassword: encryptPassword(user.password, salt)
   }
-  console.log(new_user)
   users.push(new_user);
 }
 exports.getByEmail = (email) => {

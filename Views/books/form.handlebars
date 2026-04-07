@@ -1,6 +1,7 @@
 <h1>Add new book</h1>
 
 <form action="/books/upsert" role="form" method="post">
+<input type="hidden" name="_csrf" value="{{_csrfToken}}">
 
   <div>
     <label for="title">Title</label>

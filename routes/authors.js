@@ -4,9 +4,11 @@ const Author = require('../models/author');
 
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
- res.render('authors/index', { title: 'BookedIn || Authors', authors: Author.all });
+router.get('/', async (req, res, next) => {
+ let authors = await Author.all();
+ res.render('authors/index', { title: 'BookedIn || Authors', authors: authors });
 });
+
 
 router.post('/upsert', function(req, res, next) {
   console.log(JSON.stringify(req.body));
