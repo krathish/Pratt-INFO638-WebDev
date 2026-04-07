@@ -3,7 +3,8 @@ const express = require('express');
 const handlebars = require('express-handlebars').create({
     helpers: {
       and: (a, b) => a && b,
-      in: (arr, val) => Array.isArray(arr) && arr.map(String).includes(String(val))
+      in: (arr, val) => Array.isArray(arr) && arr.map(String).includes(String(val)),
+      eq: (a, b) => a == b
     }
   });
 const bodyParser = require('body-parser');
@@ -19,6 +20,7 @@ const booksRouter = require('./routes/books');
 const genresRouter = require('./routes/genres');
 const usersRouter = require('./routes/users');
 const booksUsersRouter = require('./routes/books_users');
+const commentsRouter = require('./routes/comments');
 
 
 //framework setup
@@ -62,6 +64,7 @@ app.use('/authors', authorsRouter);
 app.use('/books', booksRouter);
 app.use('/genres', genresRouter);
 app.use('/books_users', booksUsersRouter);
+app.use('/comments', commentsRouter);
 
 
 app.use((_req, res) => {

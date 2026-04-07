@@ -3,6 +3,7 @@ const BookUser = require('../models/book_user');
 const Book = require('../models/book');
 const Author = require('../models/author'); //import authors
 const Genre = require('../models/genre'); //import genres
+const Comment = require('../models/comment'); //import comments
 
 
 const router = express.Router();
@@ -51,6 +52,8 @@ router.get('/show/:id', async (req, res, next) => {
   if (req.session.currentUser) {
     templateVars['bookUser'] = BookUser.get(req.params.id, req.session.currentUser.email);
   }
+  // get comments for this book
+  templateVars['comments'] = Comment.AllForBook(req.params.id);
   res.render('books/show', templateVars);
 });
 

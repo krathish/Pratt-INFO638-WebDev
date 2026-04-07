@@ -30,3 +30,30 @@
   </form>
 </div>
 {{/if}}
+
+<h2>Comments</h2>
+
+{{! form to add a new comment - only for logged-in users }}
+{{#if currentUser}}
+<div>
+  <form action="/comments/upsert" role="form" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrfToken}}">
+    <input type="hidden" name="bookId" value="{{bookId}}">
+    <div>
+      <textarea name="text" rows="4" cols="50"></textarea>
+    </div>
+    <button type="submit">New comment</button>
+  </form>
+</div>
+{{/if}}
+
+{{! display all comments for this book }}
+{{#each comments}}
+<div>
+  <p>{{this.text}}</p>
+  <p>By {{this.userEmail}}</p>
+  {{#if (eq @root.currentUser.email this.userEmail)}}
+    <a href="/comments/edit?id={{this.id}}">Edit</a>
+  {{/if}}
+</div>
+{{/each}}
